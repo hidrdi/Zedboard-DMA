@@ -229,7 +229,7 @@ XStatus fnAudioStartupConfig ()
 {
 
 	union ubitField uConfigurationVariable;
-	int Status;
+	// int Status;
 
 	// Configure the I2S controller for generating a valid sampling rate
 	uConfigurationVariable.l = Xil_In32(I2S_CLOCK_CONTROL_REG);
@@ -249,325 +249,325 @@ XStatus fnAudioStartupConfig ()
 	Xil_Out32(I2S_TRANSFER_CONTROL_REG, uConfigurationVariable.l);
 
 	//slave: I2S
-	Status = fnAudioWriteToReg(R15_SERIAL_PORT_CONTROL_0, 0x01);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R15_SERIAL_PORT_CONTROL_0 (0x01)");
-		}
-		return XST_FAILURE;
-	}
-	//64 bit audio frame(L+R)
-	Status = fnAudioWriteToReg(R16_SERIAL_PORT_CONTROL_1, 0x00);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R16_SERIAL_PORT_CONTROL_1 (0x00)");
-		}
-		return XST_FAILURE;
-	}
-	//ADC, DAC sampling rate to 48KHz
-	Status = fnAudioWriteToReg(R17_CONVERTER_CONTROL_0, 0x00);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R17_CONVERTER_CONTROL_0 (0x00)");
-		}
-		return XST_FAILURE;
-	}
-	//ADC, DAC sampling rate to 48KHz
-	Status = fnAudioWriteToReg(R64_SERIAL_PORT_SAMPLING_RATE, 0x00);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R64_SERIAL_PORT_SAMPLING_RATE (0x00)");
-		}
-		return XST_FAILURE;
-	}
-	//ADC are both connected, normal mic polarity
-	Status = fnAudioWriteToReg(R19_ADC_CONTROL, 0x13);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R19_ADC_CONTROL (0x13)");
-		}
-		return XST_FAILURE;
-	}
-	//DAC are both connected
-	Status = fnAudioWriteToReg(R36_DAC_CONTROL_0, 0x03);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R36_DAC_CONTROL_0 (0x03)");
-		}
-		return XST_FAILURE;
-	}
-	//Enabling both channels
-	Status = fnAudioWriteToReg(R35_PLAYBACK_POWER_MANAGEMENT, 0x03);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R35_PLAYBACK_POWER_MANAGEMENT (0x03)");
-		}
-		return XST_FAILURE;
-	}
-	//Serial input [L0,R0] to DAC
-	Status = fnAudioWriteToReg(R58_SERIAL_INPUT_ROUTE_CONTROL, 0x01);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R58_SERIAL_INPUT_ROUTE_CONTROL (0x01)");
-		}
-		return XST_FAILURE;
-	}
-	//Enable all digital circuits except Codec slew
-	Status = fnAudioWriteToReg(R65_CLOCK_ENABLE_0, 0x7F);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R65_CLOCK_ENABLE_0 (0x7F)");
-		}
-		return XST_FAILURE;
-	}
-	//Turns on CLK0 and CLK1
-	Status = fnAudioWriteToReg(R66_CLOCK_ENABLE_1, 0x03);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R66_CLOCK_ENABLE_1 (0x03)");
-		}
-		return XST_FAILURE;
-	}
-	//Mixer5 0dB
-	Status = fnAudioWriteToReg(R26_PLAYBACK_LR_MIXER_LEFT_LINE_OUTPUT_CONTROL, 0x03);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R26_PLAYBACK_LR_MIXER_LEFT_LINE_OUTPUT_CONTROL (0x03)");
-		}
-		return XST_FAILURE;
-	}
-	//Mixer7 enabled
-	Status = fnAudioWriteToReg(R28_PLAYBACK_LR_MIXER_MONO_OUTPUT_CONTROL, 0x01);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R28_PLAYBACK_LR_MIXER_MONO_OUTPUT_CONTROL (0x01)");
-		}
-		return XST_FAILURE;
-	}
-	//Mixer6 0dB
-	Status = fnAudioWriteToReg(R27_PLAYBACK_LR_MIXER_RIGHT_LINE_OUTPUT_CONTROL, 0x09);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R27_PLAYBACK_LR_MIXER_RIGHT_LINE_OUTPUT_CONTROL (0x09)");
-		}
-		return XST_FAILURE;
-	}
-	//Left output: 0db Line out
-	Status = fnAudioWriteToReg(R31_PLAYBACK_LINE_OUTPUT_LEFT_VOLUME_CONTROL, 0xE6);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R31_PLAYBACK_LINE_OUTPUT_LEFT_VOLUME_CONTROL (0xE6)");
-		}
-		return XST_FAILURE;
-	}
-	//Right output: 0db Line out
-	Status = fnAudioWriteToReg(R32_PLAYBACK_LINE_OUTPUT_RIGHT_VOLUME_CONTROL, 0xE6);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R32_PLAYBACK_LINE_OUTPUT_RIGHT_VOLUME_CONTROL (0xE6)");
-		}
-		return XST_FAILURE;
-	}
-	//Mono output: -57 dB unmute HP out
-	Status = fnAudioWriteToReg(R33_PLAYBACK_MONO_OUTPUT_CONTROL, 0x03);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R33_PLAYBACK_MONO_OUTPUT_CONTROL (0x03)");
-		}
-		return XST_FAILURE;
-	}
-	//Mic bias 90%
-	Status = fnAudioWriteToReg(R10_RECORD_MICROPHONE_BIAS_CONTROL, 0x01);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R10_RECORD_MICROPHONE_BIAS_CONTROL (0x01)");
-		}
-		return XST_FAILURE;
-	}
-	//enable pop and click suppression
-	Status = fnAudioWriteToReg(R34_PLAYBACK_POP_CLICK_SUPPRESSION, 0x00);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R34_PLAYBACK_POP_CLICK_SUPPRESSION (0x00)");
-		}
-		return XST_FAILURE;
-	}
-	//enable Left headphone and set 0dB
-	Status = fnAudioWriteToReg(R29_PLAYBACK_HEADPHONE_LEFT_VOLUME_CONTROL, 0xE7);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R29_PLAYBACK_HEADPHONE_LEFT_VOLUME_CONTROL (0xE7)");
-		}
-		return XST_FAILURE;
-	}
-	//enable Right headphone and set 0dB
-	Status = fnAudioWriteToReg(R30_PLAYBACK_HEADPHONE_RIGHT_VOLUME_CONTROL, 0xE7);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R30_PLAYBACK_HEADPHONE_RIGHT_VOLUME_CONTROL (0xE7)");
-		}
-		return XST_FAILURE;
-	}
-	//enable Mixer1, mute left single ended
-	Status = fnAudioWriteToReg(R4_RECORD_MIXER_LEFT_CONTROL_0, 0x01);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R4_RECORD_MIXER_LEFT_CONTROL_0 (0x01)");
-		}
-		return XST_FAILURE;
-	}
-	//enable MixerAux1, mute left differential input
-	Status = fnAudioWriteToReg(R5_RECORD_MIXER_LEFT_CONTROL_1, 0x0D);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R5_RECORD_MIXER_LEFT_CONTROL_1 (0x0D)");
-		}
-		return XST_FAILURE;
-	}
-	//enable Mixer2, mute right single ende
-	Status = fnAudioWriteToReg(R6_RECORD_MIXER_RIGHT_CONTROL_0, 0x01);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R6_RECORD_MIXER_RIGHT_CONTROL_0 (0x01)");
-		}
-		return XST_FAILURE;
-	}
-	//enable MixerAux2, mute right differential input
-	Status = fnAudioWriteToReg(R7_RECORD_MIXER_RIGHT_CONTROL_1, 0x05);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R7_RECORD_MIXER_RIGHT_CONTROL_1 (0x05)");
-		}
-		return XST_FAILURE;
-	}
-	//disable Left differential input
-	Status = fnAudioWriteToReg(R8_LEFT_DIFFERENTIAL_INPUT_VOLUME_CONTROL, 0x03);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R8_LEFT_DIFFERENTIAL_INPUT_VOLUME_CONTROL (0x03)");
-		}
-		return XST_FAILURE;
-	}
-	//disable right differential input
-	Status = fnAudioWriteToReg(R9_RIGHT_DIFFERENTIAL_INPUT_VOLUME_CONTROL, 0x03);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R9_RIGHT_DIFFERENTIAL_INPUT_VOLUME_CONTROL (0x03)");
-		}
-		return XST_FAILURE;
-	}
-	//Enable Mixer3 with the the left DAC channel, mute MixerAux3
-	Status = fnAudioWriteToReg(R22_PLAYBACK_MIXER_LEFT_CONTROL_0, 0x21);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R22_PLAYBACK_MIXER_LEFT_CONTROL_0 (0x21)");
-		}
-		return XST_FAILURE;
-	}
-	//Mute Right and Left input mixers
-	Status = fnAudioWriteToReg(R23_PLAYBACK_MIXER_LEFT_CONTROL_1, 0x00);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R23_PLAYBACK_MIXER_LEFT_CONTROL_1 (0x00)");
-		}
-		return XST_FAILURE;
-	}
-	//Enable Mixer4 with the the right DAC channel, mute MixerAux4
-	Status = fnAudioWriteToReg(R24_PLAYBACK_MIXER_RIGHT_CONTROL_0, 0x41);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R24_PLAYBACK_MIXER_RIGHT_CONTROL_0 (0x41)");
-		}
-		return XST_FAILURE;
-	}
-	//Mute Right and Left input mixers
-	Status = fnAudioWriteToReg(R25_PLAYBACK_MIXER_RIGHT_CONTROL_1, 0x00);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R25_PLAYBACK_MIXER_RIGHT_CONTROL_1 (0x00)");
-		}
-		return XST_FAILURE;
-	}
-	//Serial output to L0 R0
-	Status = fnAudioWriteToReg(R59_SERIAL_OUTPUT_ROUTE_CONTROL, 0x01);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R59_SERIAL_OUTPUT_ROUTE_CONTROL (0x01)");
-		}
-		return XST_FAILURE;
-	}
-	//Enable LRCLK and BLCK
-	Status = fnAudioWriteToReg(R60_SERIAL_DATA_GPIO_CONGIURATION, 0x00);
-	if (Status == XST_FAILURE)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: could not write R60_SERIAL_DATA_GPIO_CONGIURATION (0x00)");
-		}
-		return XST_FAILURE;
-	}
+	// Status = fnAudioWriteToReg(R15_SERIAL_PORT_CONTROL_0, 0x01);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R15_SERIAL_PORT_CONTROL_0 (0x01)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //64 bit audio frame(L+R)
+	// Status = fnAudioWriteToReg(R16_SERIAL_PORT_CONTROL_1, 0x00);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R16_SERIAL_PORT_CONTROL_1 (0x00)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //ADC, DAC sampling rate to 48KHz
+	// Status = fnAudioWriteToReg(R17_CONVERTER_CONTROL_0, 0x00);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R17_CONVERTER_CONTROL_0 (0x00)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //ADC, DAC sampling rate to 48KHz
+	// Status = fnAudioWriteToReg(R64_SERIAL_PORT_SAMPLING_RATE, 0x00);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R64_SERIAL_PORT_SAMPLING_RATE (0x00)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //ADC are both connected, normal mic polarity
+	// Status = fnAudioWriteToReg(R19_ADC_CONTROL, 0x13);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R19_ADC_CONTROL (0x13)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //DAC are both connected
+	// Status = fnAudioWriteToReg(R36_DAC_CONTROL_0, 0x03);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R36_DAC_CONTROL_0 (0x03)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Enabling both channels
+	// Status = fnAudioWriteToReg(R35_PLAYBACK_POWER_MANAGEMENT, 0x03);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R35_PLAYBACK_POWER_MANAGEMENT (0x03)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Serial input [L0,R0] to DAC
+	// Status = fnAudioWriteToReg(R58_SERIAL_INPUT_ROUTE_CONTROL, 0x01);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R58_SERIAL_INPUT_ROUTE_CONTROL (0x01)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Enable all digital circuits except Codec slew
+	// Status = fnAudioWriteToReg(R65_CLOCK_ENABLE_0, 0x7F);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R65_CLOCK_ENABLE_0 (0x7F)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Turns on CLK0 and CLK1
+	// Status = fnAudioWriteToReg(R66_CLOCK_ENABLE_1, 0x03);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R66_CLOCK_ENABLE_1 (0x03)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Mixer5 0dB
+	// Status = fnAudioWriteToReg(R26_PLAYBACK_LR_MIXER_LEFT_LINE_OUTPUT_CONTROL, 0x03);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R26_PLAYBACK_LR_MIXER_LEFT_LINE_OUTPUT_CONTROL (0x03)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Mixer7 enabled
+	// Status = fnAudioWriteToReg(R28_PLAYBACK_LR_MIXER_MONO_OUTPUT_CONTROL, 0x01);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R28_PLAYBACK_LR_MIXER_MONO_OUTPUT_CONTROL (0x01)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Mixer6 0dB
+	// Status = fnAudioWriteToReg(R27_PLAYBACK_LR_MIXER_RIGHT_LINE_OUTPUT_CONTROL, 0x09);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R27_PLAYBACK_LR_MIXER_RIGHT_LINE_OUTPUT_CONTROL (0x09)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Left output: 0db Line out
+	// Status = fnAudioWriteToReg(R31_PLAYBACK_LINE_OUTPUT_LEFT_VOLUME_CONTROL, 0xE6);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R31_PLAYBACK_LINE_OUTPUT_LEFT_VOLUME_CONTROL (0xE6)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Right output: 0db Line out
+	// Status = fnAudioWriteToReg(R32_PLAYBACK_LINE_OUTPUT_RIGHT_VOLUME_CONTROL, 0xE6);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R32_PLAYBACK_LINE_OUTPUT_RIGHT_VOLUME_CONTROL (0xE6)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Mono output: -57 dB unmute HP out
+	// Status = fnAudioWriteToReg(R33_PLAYBACK_MONO_OUTPUT_CONTROL, 0x03);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R33_PLAYBACK_MONO_OUTPUT_CONTROL (0x03)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Mic bias 90%
+	// Status = fnAudioWriteToReg(R10_RECORD_MICROPHONE_BIAS_CONTROL, 0x01);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R10_RECORD_MICROPHONE_BIAS_CONTROL (0x01)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //enable pop and click suppression
+	// Status = fnAudioWriteToReg(R34_PLAYBACK_POP_CLICK_SUPPRESSION, 0x00);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R34_PLAYBACK_POP_CLICK_SUPPRESSION (0x00)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //enable Left headphone and set 0dB
+	// Status = fnAudioWriteToReg(R29_PLAYBACK_HEADPHONE_LEFT_VOLUME_CONTROL, 0xE7);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R29_PLAYBACK_HEADPHONE_LEFT_VOLUME_CONTROL (0xE7)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //enable Right headphone and set 0dB
+	// Status = fnAudioWriteToReg(R30_PLAYBACK_HEADPHONE_RIGHT_VOLUME_CONTROL, 0xE7);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R30_PLAYBACK_HEADPHONE_RIGHT_VOLUME_CONTROL (0xE7)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //enable Mixer1, mute left single ended
+	// Status = fnAudioWriteToReg(R4_RECORD_MIXER_LEFT_CONTROL_0, 0x01);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R4_RECORD_MIXER_LEFT_CONTROL_0 (0x01)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //enable MixerAux1, mute left differential input
+	// Status = fnAudioWriteToReg(R5_RECORD_MIXER_LEFT_CONTROL_1, 0x0D);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R5_RECORD_MIXER_LEFT_CONTROL_1 (0x0D)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //enable Mixer2, mute right single ende
+	// Status = fnAudioWriteToReg(R6_RECORD_MIXER_RIGHT_CONTROL_0, 0x01);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R6_RECORD_MIXER_RIGHT_CONTROL_0 (0x01)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //enable MixerAux2, mute right differential input
+	// Status = fnAudioWriteToReg(R7_RECORD_MIXER_RIGHT_CONTROL_1, 0x05);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R7_RECORD_MIXER_RIGHT_CONTROL_1 (0x05)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //disable Left differential input
+	// Status = fnAudioWriteToReg(R8_LEFT_DIFFERENTIAL_INPUT_VOLUME_CONTROL, 0x03);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R8_LEFT_DIFFERENTIAL_INPUT_VOLUME_CONTROL (0x03)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //disable right differential input
+	// Status = fnAudioWriteToReg(R9_RIGHT_DIFFERENTIAL_INPUT_VOLUME_CONTROL, 0x03);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R9_RIGHT_DIFFERENTIAL_INPUT_VOLUME_CONTROL (0x03)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Enable Mixer3 with the the left DAC channel, mute MixerAux3
+	// Status = fnAudioWriteToReg(R22_PLAYBACK_MIXER_LEFT_CONTROL_0, 0x21);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R22_PLAYBACK_MIXER_LEFT_CONTROL_0 (0x21)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Mute Right and Left input mixers
+	// Status = fnAudioWriteToReg(R23_PLAYBACK_MIXER_LEFT_CONTROL_1, 0x00);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R23_PLAYBACK_MIXER_LEFT_CONTROL_1 (0x00)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Enable Mixer4 with the the right DAC channel, mute MixerAux4
+	// Status = fnAudioWriteToReg(R24_PLAYBACK_MIXER_RIGHT_CONTROL_0, 0x41);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R24_PLAYBACK_MIXER_RIGHT_CONTROL_0 (0x41)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Mute Right and Left input mixers
+	// Status = fnAudioWriteToReg(R25_PLAYBACK_MIXER_RIGHT_CONTROL_1, 0x00);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R25_PLAYBACK_MIXER_RIGHT_CONTROL_1 (0x00)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Serial output to L0 R0
+	// Status = fnAudioWriteToReg(R59_SERIAL_OUTPUT_ROUTE_CONTROL, 0x01);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R59_SERIAL_OUTPUT_ROUTE_CONTROL (0x01)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
+	// //Enable LRCLK and BLCK
+	// Status = fnAudioWriteToReg(R60_SERIAL_DATA_GPIO_CONGIURATION, 0x00);
+	// if (Status == XST_FAILURE)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: could not write R60_SERIAL_DATA_GPIO_CONGIURATION (0x00)");
+	// 	}
+	// 	return XST_FAILURE;
+	// }
 
 
 	return XST_SUCCESS;
@@ -585,14 +585,14 @@ XStatus fnInitAudio()
 	int Status;
 
 	//Set the PLL and wait for Lock
-	Status = fnAudioPllConfig();
-	if (Status != XST_SUCCESS)
-	{
-		if (Demo.u8Verbose)
-		{
-			xil_printf("\r\nError: Could not lock PLL");
-		}
-	}
+	// Status = fnAudioPllConfig();
+	// if (Status != XST_SUCCESS)
+	// {
+	// 	if (Demo.u8Verbose)
+	// 	{
+	// 		xil_printf("\r\nError: Could not lock PLL");
+	// 	}
+	// }
 
 	//Configure the ADAU registers
 	Status = fnAudioStartupConfig();
@@ -600,7 +600,8 @@ XStatus fnInitAudio()
 	{
 		if (Demo.u8Verbose)
 		{
-			xil_printf("\r\nError: Failed I2C Configuration");
+			// xil_printf("\r\nError: Failed I2C Configuration");
+			xil_printf("\r\nError: Failed I2S Configuration");
 		}
 	}
 

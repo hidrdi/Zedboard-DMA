@@ -97,8 +97,8 @@ extern void xil_printf(const char *format, ...);
  * Device instance definitions
  */
 
-static XIic sIic;
-static XAxiDma sAxiDma;		/* Instance of the XAxiDma */
+// static XIic sIic;
+// static XAxiDma sAxiDma;		/* Instance of the XAxiDma */
 
 static XGpio sUserIO;
 
@@ -113,22 +113,22 @@ static XGpio sUserIO;
 #ifdef XPAR_INTC_0_DEVICE_ID
 const ivt_t ivt[] = {
 	//IIC
-	{XPAR_AXI_INTC_0_AXI_IIC_0_IIC2INTC_IRPT_INTR, (XInterruptHandler)XIic_InterruptHandler, &sIic},
-	//DMA Stream to MemoryMap Interrupt handler
-	{XPAR_AXI_INTC_0_AXI_DMA_0_S2MM_INTROUT_INTR, (XInterruptHandler)fnS2MMInterruptHandler, &sAxiDma},
-	//DMA MemoryMap to Stream Interrupt handler
-	{XPAR_AXI_INTC_0_AXI_DMA_0_MM2S_INTROUT_INTR, (XInterruptHandler)fnMM2SInterruptHandler, &sAxiDma},
+	// {XPAR_AXI_INTC_0_AXI_IIC_0_IIC2INTC_IRPT_INTR, (XInterruptHandler)XIic_InterruptHandler, &sIic},
+	// //DMA Stream to MemoryMap Interrupt handler
+	// {XPAR_AXI_INTC_0_AXI_DMA_0_S2MM_INTROUT_INTR, (XInterruptHandler)fnS2MMInterruptHandler, &sAxiDma},
+	// //DMA MemoryMap to Stream Interrupt handler
+	// {XPAR_AXI_INTC_0_AXI_DMA_0_MM2S_INTROUT_INTR, (XInterruptHandler)fnMM2SInterruptHandler, &sAxiDma},
 	//User I/O (buttons, switches, LEDs)
 	{XPAR_AXI_INTC_0_AXI_GPIO_0_IP2INTC_IRPT_INTR, (XInterruptHandler)fnUserIOIsr, &sUserIO}
 };
 #else
 const ivt_t ivt[] = {
 	//IIC
-	{XPAR_FABRIC_AXI_IIC_0_IIC2INTC_IRPT_INTR, (Xil_ExceptionHandler)XIic_InterruptHandler, &sIic},
-	//DMA Stream to MemoryMap Interrupt handler
-	{XPAR_FABRIC_AXI_DMA_0_S2MM_INTROUT_INTR, (Xil_ExceptionHandler)fnS2MMInterruptHandler, &sAxiDma},
-	//DMA MemoryMap to Stream Interrupt handler
-	{XPAR_FABRIC_AXI_DMA_0_MM2S_INTROUT_INTR, (Xil_ExceptionHandler)fnMM2SInterruptHandler, &sAxiDma},
+	// {XPAR_FABRIC_AXI_IIC_0_IIC2INTC_IRPT_INTR, (Xil_ExceptionHandler)XIic_InterruptHandler, &sIic},
+	// //DMA Stream to MemoryMap Interrupt handler
+	// {XPAR_FABRIC_AXI_DMA_0_S2MM_INTROUT_INTR, (Xil_ExceptionHandler)fnS2MMInterruptHandler, &sAxiDma},
+	// //DMA MemoryMap to Stream Interrupt handler
+	// {XPAR_FABRIC_AXI_DMA_0_MM2S_INTROUT_INTR, (Xil_ExceptionHandler)fnMM2SInterruptHandler, &sAxiDma},
 	//User I/O (buttons, switches, LEDs)
 	{XPAR_FABRIC_AXI_GPIO_0_IP2INTC_IRPT_INTR, (Xil_ExceptionHandler)fnUserIOIsr, &sUserIO}
 };
@@ -181,11 +181,11 @@ int main(void)
 
 
 	// Initialize IIC controller
-	Status = fnInitIic(&sIic);
-	if(Status != XST_SUCCESS) {
-		xil_printf("Error initializing I2C controller");
-		return XST_FAILURE;
-	}
+	// Status = fnInitIic(&sIic);
+	// if(Status != XST_SUCCESS) {
+	// 	xil_printf("Error initializing I2C controller");
+	// 	return XST_FAILURE;
+	// }
 
     // Initialize User I/O driver
     Status = fnInitUserIO(&sUserIO);
@@ -196,14 +196,14 @@ int main(void)
 
 
 	//Initialize DMA
-	Status = fnConfigDma(&sAxiDma);
-	if(Status != XST_SUCCESS) {
-		xil_printf("DMA configuration ERROR");
-		return XST_FAILURE;
-	}
+	// Status = fnConfigDma(&sAxiDma);
+	// if(Status != XST_SUCCESS) {
+	// 	xil_printf("DMA configuration ERROR");
+	// 	return XST_FAILURE;
+	// }
 
 
-	//Initialize Audio I2S
+	// Initialize Audio I2S
 	Status = fnInitAudio();
 	if(Status != XST_SUCCESS) {
 		xil_printf("Audio initializing ERROR");
@@ -213,17 +213,17 @@ int main(void)
 
 	// Enable all interrupts in our interrupt vector table
 	// Make sure all driver instances using interrupts are initialized first
+	// fnEnableInterrupts(&sIntc, &ivt[0], sizeof(ivt)/sizeof(ivt[0]));
 	fnEnableInterrupts(&sIntc, &ivt[0], sizeof(ivt)/sizeof(ivt[0]));
-
 
 
     xil_printf("\r\nInitialization done");
     xil_printf("\r\n");
-    xil_printf("\r\nControls:");
-    xil_printf("\r\n    BTNL: Play recording on LINE OUT");
-    xil_printf("\r\n    BTNU: Record from MIC IN");
-    xil_printf("\r\n    BTND: Play recording on HPH OUT");
-    xil_printf("\r\n    BTNR: Record from LINE IN");
+    // xil_printf("\r\nControls:");
+    // xil_printf("\r\n    BTNL: Play recording on LINE OUT");
+    // xil_printf("\r\n    BTNU: Record from MIC IN");
+    // xil_printf("\r\n    BTND: Play recording on HPH OUT");
+    // xil_printf("\r\n    BTNR: Record from LINE IN");
 
     //main loop
 
@@ -237,138 +237,137 @@ int main(void)
     	//Xil_DCacheDisable();
 
     	// Checking the DMA S2MM event flag
-    			if (Demo.fDmaS2MMEvent)
-    			{
-    				xil_printf("\r\nRecording Done...");
+//     			if (Demo.fDmaS2MMEvent)
+//     			{
+//     				xil_printf("\r\nRecording Done...");
 
-    				// Disable Stream function to send data (S2MM)
-    				Xil_Out32(I2S_STREAM_CONTROL_REG, 0x00000000);
-    				Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x00000000);
-    				//Flush cache
-    				//Flush cache
+//     				// Disable Stream function to send data (S2MM)
+//     				Xil_Out32(I2S_STREAM_CONTROL_REG, 0x00000000);
+//     				Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x00000000);
+//     				//Flush cache
+//     				//Flush cache
 
 
-//					//microblaze_flush_dcache();
-					//Xil_DCacheInvalidateRange((u32) MEM_BASE_ADDR, 5*NR_AUDIO_SAMPLES);
-    				//microblaze_invalidate_dcache();
-    				// Reset S2MM event and record flag
-    				Demo.fDmaS2MMEvent = 0;
-    				Demo.fAudioRecord = 0;
-    			}
+// //					//microblaze_flush_dcache();
+// 					//Xil_DCacheInvalidateRange((u32) MEM_BASE_ADDR, 5*NR_AUDIO_SAMPLES);
+//     				//microblaze_invalidate_dcache();
+//     				// Reset S2MM event and record flag
+//     				Demo.fDmaS2MMEvent = 0;
+//     				Demo.fAudioRecord = 0;
+//     			}
 
     			// Checking the DMA MM2S event flag
-    			if (Demo.fDmaMM2SEvent)
-    			{
-    				xil_printf("\r\nPlayback Done...");
+//     			if (Demo.fDmaMM2SEvent)
+//     			{
+//     				xil_printf("\r\nPlayback Done...");
 
-    				// Disable Stream function to send data (S2MM)
-    				Xil_Out32(I2S_STREAM_CONTROL_REG, 0x00000000);
-    				Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x00000000);
-    				//Flush cache
-//					//microblaze_flush_dcache();
-    				//Xil_DCacheFlushRange((u32) MEM_BASE_ADDR, 5*NR_AUDIO_SAMPLES);
-    				// Reset MM2S event and playback flag
-    				Demo.fDmaMM2SEvent = 0;
-    				Demo.fAudioPlayback = 0;
-    			}
+//     				// Disable Stream function to send data (S2MM)
+//     				Xil_Out32(I2S_STREAM_CONTROL_REG, 0x00000000);
+//     				Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x00000000);
+//     				//Flush cache
+// //					//microblaze_flush_dcache();
+//     				//Xil_DCacheFlushRange((u32) MEM_BASE_ADDR, 5*NR_AUDIO_SAMPLES);
+//     				// Reset MM2S event and playback flag
+//     				Demo.fDmaMM2SEvent = 0;
+//     				Demo.fAudioPlayback = 0;
+//     			}
 
     			// Checking the DMA Error event flag
-    			if (Demo.fDmaError)
-    			{
-    				xil_printf("\r\nDma Error...");
-    				xil_printf("\r\nDma Reset...");
+    			// if (Demo.fDmaError)
+    			// {
+    			// 	xil_printf("\r\nDma Error...");
+    			// 	xil_printf("\r\nDma Reset...");
 
 
-    				Demo.fDmaError = 0;
-    				Demo.fAudioPlayback = 0;
-    				Demo.fAudioRecord = 0;
-    			}
+    			// 	Demo.fDmaError = 0;
+    			// 	Demo.fAudioPlayback = 0;
+    			// 	Demo.fAudioRecord = 0;
+    			// }
 
     			// Checking the btn change event
     			if(Demo.fUserIOEvent) {
 
     				switch(Demo.chBtn) {
     					case 'u':
-    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
+    						if (!Demo.fAudioRecord)
     						{
-    							xil_printf("\r\nStart Recording...\r\n");
-    							fnSetMicInput();
+    							xil_printf("\r\nStart Play...\r\n");
 
-    							fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
+								Xil_Out32(I2S_STREAM_CONTROL_REG, 0x3);
+    							Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x3);
+    							
     							Demo.fAudioRecord = 1;
     						}
     						else
     						{
-    							if (Demo.fAudioRecord)
-    							{
-    								xil_printf("\r\nStill Recording...\r\n");
-    							}
-    							else
-    							{
-    								xil_printf("\r\nStill Playing back...\r\n");
-    							}
+								xil_printf("\r\nnStop Play...\r\n");
+								
+								Xil_Out32(I2S_STREAM_CONTROL_REG, 0x0);
+    							Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x0);
+    							
+    							Demo.fAudioRecord = 0;
     						}
-    						break;
-    					case 'd':
-    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
-    						{
-    							xil_printf("\r\nStart Playback...\r\n");
-    							fnSetHpOutput();
-    							fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
-    							Demo.fAudioPlayback = 1;
-    						}
-    						else
-    						{
-    							if (Demo.fAudioRecord)
-    							{
-    								xil_printf("\r\nStill Recording...\r\n");
-    							}
-    							else
-    							{
-    								xil_printf("\r\nStill Playing back...\r\n");
-    							}
-    						}
-    						break;
-    					case 'r':
-    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
-    						{
-    							xil_printf("\r\nStart Recording...\r\n");
-    							fnSetLineInput();
-    							fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
-    							Demo.fAudioRecord = 1;
-    						}
-    						else
-    						{
-    							if (Demo.fAudioRecord)
-    							{
-    								xil_printf("\r\nStill Recording...\r\n");
-    							}
-    							else
-    							{
-    								xil_printf("\r\nStill Playing back...\r\n");
-    							}
-    						}
-    						break;
-    					case 'l':
-    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
-    						{
-    							xil_printf("\r\nStart Playback...");
-    							fnSetLineOutput();
-    							fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
-    							Demo.fAudioPlayback = 1;
-    						}
-    						else
-    						{
-    							if (Demo.fAudioRecord)
-    							{
-    								xil_printf("\r\nStill Recording...\r\n");
-    							}
-    							else
-    							{
-    								xil_printf("\r\nStill Playing back...\r\n");
-    							}
-    						}
-    						break;
+						break;
+    					// case 'd':
+    					// 	if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
+    					// 	{
+    					// 		xil_printf("\r\nStart Playback...\r\n");
+    					// 		fnSetHpOutput();
+    					// 		fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
+    					// 		Demo.fAudioPlayback = 1;
+    					// 	}
+    					// 	else
+    					// 	{
+    					// 		if (Demo.fAudioRecord)
+    					// 		{
+    					// 			xil_printf("\r\nStill Recording...\r\n");
+    					// 		}
+    					// 		else
+    					// 		{
+    					// 			xil_printf("\r\nStill Playing back...\r\n");
+    					// 		}
+    					// 	}
+    					// 	break;
+    					// case 'r':
+    					// 	if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
+    					// 	{
+    					// 		xil_printf("\r\nStart Recording...\r\n");
+    					// 		fnSetLineInput();
+    					// 		fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
+    					// 		Demo.fAudioRecord = 1;
+    					// 	}
+    					// 	else
+    					// 	{
+    					// 		if (Demo.fAudioRecord)
+    					// 		{
+    					// 			xil_printf("\r\nStill Recording...\r\n");
+    					// 		}
+    					// 		else
+    					// 		{
+    					// 			xil_printf("\r\nStill Playing back...\r\n");
+    					// 		}
+    					// 	}
+    					// 	break;
+    					// case 'l':
+    					// 	if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
+    					// 	{
+    					// 		xil_printf("\r\nStart Playback...");
+    					// 		fnSetLineOutput();
+    					// 		fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
+    					// 		Demo.fAudioPlayback = 1;
+    					// 	}
+    					// 	else
+    					// 	{
+    					// 		if (Demo.fAudioRecord)
+    					// 		{
+    					// 			xil_printf("\r\nStill Recording...\r\n");
+    					// 		}
+    					// 		else
+    					// 		{
+    					// 			xil_printf("\r\nStill Playing back...\r\n");
+    					// 		}
+    					// 	}
+    					// 	break;
     					default:
     						break;
     				}
